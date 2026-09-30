@@ -1,4 +1,4 @@
-# 🛡️ Private Browser Agent
+# Private Browser Agent
 
 ### Privacy-Preserving Vision Browser Agent for Smart India Hackathon 2024
 
@@ -13,7 +13,7 @@
 
 ---
 
-## 📋 Table of Contents
+## Table of Contents
 
 - [Overview](#overview)
 - [Architecture](#architecture)
@@ -96,15 +96,15 @@ Tool executes in your browser (click, type, navigate...)
 
 ## Features
 
-- 🔒 **Local PII Detection** — BERT model runs in-browser via ONNX Runtime Web
-- 👁️ **Local Vision** — YOLOS-tiny detects objects in screenshots without any cloud call
-- 🎭 **Visual Masking** — Canvas API blacks out passwords, masks faces and PII regions
-- 🔑 **Token Vault** — Session-scoped map of `<PLACEHOLDER>` → raw value, never leaves browser
-- ✅ **Triple Privacy Gate** — String scan + BERT + Regex on every outbound payload
-- 🤖 **Multimodal Reasoning** — Groq's `qwen/qwen3.8-27b` reasons over sanitized screenshot + DOM
-- 🌐 **Works on Any Website** — Not hardcoded to any domain or page structure
-- 📊 **Live Evidence Panel** — Developer view shows exactly what is and isn't sent to the server
-- 🛠️ **Full Tool Loop** — observe, click, type, navigate, scroll, select, wait, finish
+-  **Local PII Detection** — BERT model runs in-browser via ONNX Runtime Web
+-  **Local Vision** — YOLOS-tiny detects objects in screenshots without any cloud call
+-  **Visual Masking** — Canvas API blacks out passwords, masks faces and PII regions
+-  **Token Vault** — Session-scoped map of `<PLACEHOLDER>` → raw value, never leaves browser
+-  **Triple Privacy Gate** — String scan + BERT + Regex on every outbound payload
+-  **Multimodal Reasoning** — Groq's `qwen/qwen3.8-27b` reasons over sanitized screenshot + DOM
+-  **Works on Any Website** — Not hardcoded to any domain or page structure
+-  **Live Evidence Panel** — Developer view shows exactly what is and isn't sent to the server
+-  **Full Tool Loop** — observe, click, type, navigate, scroll, select, wait, finish
 
 ---
 
@@ -170,7 +170,7 @@ GROQ_MODEL=qwen/qwen3.8-27b
 3. Navigate to **API Keys** → **Create API Key**
 4. Copy the key and paste it into `server/.env`
 
-> ⚠️ **Never commit `server/.env`** — it is listed in `.gitignore` and will never be pushed to git.
+>  **Never commit `server/.env`** — it is listed in `.gitignore` and will never be pushed to git.
 
 ### 4. Build the Extension
 
@@ -200,8 +200,8 @@ You should see:
 5. The extension "Private Browser Agent" will appear in your extensions list
 
 **Pin the extension:**
-- Click the puzzle icon 🧩 in the Chrome toolbar
-- Click the pin 📌 next to "Private Browser Agent"
+- Click the puzzle icon  in the Chrome toolbar
+- Click the pin  next to "Private Browser Agent"
 - The shield icon will appear in your toolbar
 
 ### 6. Start the Reasoning Server
@@ -540,17 +540,6 @@ npm run build
 - If behind a firewall, the model may fail to download
 - Check Chrome DevTools Console on the sidepanel page for `[Vision]` log messages
 
-### ❌ Push to GitHub still fails with large files
-```bash
-# Check what git is tracking
-git ls-files | xargs -I{} du -sh {} | sort -rh | head -10
-
-# If any *.onnx or *.wasm files appear, remove them:
-git rm --cached path/to/file.onnx
-git commit -m "Remove large binary"
-git push --force origin main
-```
-
 ---
 
 ## Contributing
@@ -568,8 +557,6 @@ This project was built for **Smart India Hackathon 2024**. Contributions welcome
 ---
 
 <div align="center">
-
-**Built for Smart India Hackathon 2024**
 
 *Local AI • Privacy First • No raw data leaves your browser*
 
