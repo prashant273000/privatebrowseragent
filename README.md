@@ -1,5 +1,3 @@
-<div align="center">
-
 # 🛡️ Private Browser Agent
 
 ### Privacy-Preserving Vision Browser Agent for Smart India Hackathon 2024
@@ -576,3 +574,4 @@ This project was built for **Smart India Hackathon 2024**. Contributions welcome
 *Local AI • Privacy First • No raw data leaves your browser*
 
 </div>
+
