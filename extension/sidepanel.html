@@ -80,9 +80,9 @@
     </div>
 
     <div class="status-group" id="grp-server">
-      <h3>SERVER REASONING (GROQ)</h3>
+      <h3>SERVER REASONING</h3>
       <div class="step" id="step-sent">Sanitized context sent</div>
-      <div class="step" id="step-reasoning">Groq reasoning completed</div>
+      <div class="step" id="step-reasoning">Reasoning completed</div>
       <div class="step" id="step-tool">Tool call generated</div>
     </div>
 
@@ -128,13 +128,13 @@
 
     <button class="collapsible">DEVELOPER JSON</button>
     <div class="content">
-        <strong>STEP 2 RESULT (INTENT)</strong>
+        <strong>STEP 2 RESULT</strong>
         <pre id="j-step2"></pre>
         <strong>SAFE CONTEXT</strong>
         <pre id="j-safe"></pre>
-        <strong>SANITIZED SCREEN CONTEXT</strong>
+        <strong>FILTERED SCREEN</strong>
         <pre id="j-screen"></pre>
-        <strong>GROQ REQUEST SUMMARY</strong>
+        <strong>REQUEST SUMMARY</strong>
         <pre id="j-groq"></pre>
         <strong>TOOL CALL</strong>
         <pre id="j-call"></pre>
@@ -143,8 +143,8 @@
     </div>
 
     <div id="metricsView">
-      <h3 style="margin:0 0 5px 0; border-bottom: 1px solid #444; padding-bottom: 3px;">SIH EVALUATION METRICS</h3>
-      <p>Visual Context Acc : <span id="metric-vision-acc">NOT MEASURED</span></p>
+      <h3 style="margin:0 0 5px 0; border-bottom: 1px solid #444; padding-bottom: 3px;"></h3>
+      <p>Visual Context     : <span id="metric-vision-acc">NOT MEASURED</span></p>
       <p>PII Precision      : <span id="metric-pii-prec">NOT MEASURED</span></p>
       <p>PII Recall         : <span id="metric-pii-recall">NOT MEASURED</span></p>
       <p>Redaction Precision: <span id="metric-redact-prec">NOT MEASURED</span></p>
