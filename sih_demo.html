@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>SIH Demo - Private Browser Agent</title>
+    <style>
+        body { font-family: Arial, sans-serif; background: #f0f2f5; padding: 20px; }
+        .product-list { display: flex; gap: 20px; margin-bottom: 40px; }
+        .card { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); width: 250px; }
+        .card h2 { margin: 0 0 10px 0; font-size: 18px; }
+        .price { color: #b12704; font-size: 24px; font-weight: bold; }
+        .specs { color: #555; margin: 10px 0; font-size: 14px; }
+        .rating { color: #ffa41c; font-weight: bold; }
+        button { background: #ffd814; border: 1px solid #fcd200; padding: 8px 15px; border-radius: 20px; cursor: pointer; width: 100%; margin-top: 15px; }
+        
+        .sensitive-section { background: white; padding: 20px; border-radius: 8px; max-width: 400px; }
+        .form-group { margin-bottom: 15px; }
+        label { display: block; margin-bottom: 5px; font-size: 14px; font-weight: bold; }
+        input { width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; }
+    </style>
+</head>
+<body>
+    <h1>Laptops</h1>
+    
+    <div class="product-list">
+        <div class="card" id="laptop-a">
+            <h2>Laptop A</h2>
+            <div class="price">₹55,000</div>
+            <div class="specs">8GB RAM<br>512GB SSD</div>
+            <div class="rating">4.2 rating</div>
+            <button id="btn-a">Add to Cart</button>
+        </div>
+
+        <div class="card" id="laptop-b">
+            <h2>Laptop B</h2>
+            <div class="price">₹60,000</div>
+            <div class="specs">16GB RAM<br>512GB SSD</div>
+            <div class="rating">4.7 rating</div>
+            <button id="btn-b">Add to Cart</button>
+        </div>
+
+        <div class="card" id="laptop-c">
+            <h2>Laptop C</h2>
+            <div class="price">₹48,000</div>
+            <div class="specs">8GB RAM<br>256GB SSD</div>
+            <div class="rating">4.1 rating</div>
+            <button id="btn-c">Add to Cart</button>
+        </div>
+    </div>
+
+    <h1>Checkout Details (Synthetic PII)</h1>
+    <div class="sensitive-section">
+        <div class="form-group">
+            <label>Full Name</label>
+            <div id="demo-name">Rahul</div>
+        </div>
+        <div class="form-group">
+            <label>Email</label>
+            <input type="email" autocomplete="email" value="rahul@example.com" />
+        </div>
+        <div class="form-group">
+            <label>Phone</label>
+            <input type="tel" autocomplete="tel" value="9876543210" />
+        </div>
+        <div class="form-group">
+            <label>Password</label>
+            <input type="password" value="secretpassword123" />
+        </div>
+        <div class="form-group">
+            <label>Credit Card</label>
+            <input type="text" autocomplete="cc-number" value="4111111111111111" />
+        </div>
+    </div>
+</body>
+</html>

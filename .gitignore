@@ -1,0 +1,17 @@
+server/.env
+.env
+.env.*
+!.env.example
+node_modules
+dist
+
+# Large binary model weights — downloaded at runtime, do NOT commit
+*.onnx
+*.wasm
+*.ot
+
+# WASM JS shims (auto-generated)
+extension/public/wasm/
+
+# MASSIVE intent model — very large tokenizer (17MB), downloaded at runtime
+extension/public/models/cartesinus/

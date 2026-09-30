@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <link rel="stylesheet" href="sidepanel.css">
+  <style>
+    body { font-family: sans-serif; font-size: 12px; }
+    .hidden { display: none !important; }
+    .status-group { margin-bottom: 10px; padding: 8px; background: #f9f9f9; border-radius: 5px; }
+    .status-group h3 { margin: 0 0 5px 0; font-size: 12px; color: #333; text-transform: uppercase; border-bottom: 1px solid #ccc; padding-bottom: 5px; }
+    .step { font-size: 11px; margin: 3px 0; color: #666; display: flex; align-items: center; }
+    .step.done::before { content: "✓ "; color: green; font-weight: bold; margin-right: 5px; }
+    
+    .collapsible {
+      background-color: #eee;
+      color: #333;
+      cursor: pointer;
+      padding: 8px;
+      width: 100%;
+      border: none;
+      text-align: left;
+      outline: none;
+      font-size: 12px;
+      font-weight: bold;
+      border-radius: 3px;
+      margin-top: 5px;
+    }
+    .active, .collapsible:hover { background-color: #ddd; }
+    .content {
+      padding: 10px;
+      display: none;
+      overflow: hidden;
+      background-color: #fafafa;
+      border: 1px solid #eee;
+      border-radius: 0 0 3px 3px;
+    }
+    
+    .img-compare { display: flex; gap: 5px; }
+    .img-compare > div { flex: 1; text-align: center; }
+    .img-compare img { max-width: 100%; border: 1px solid #ccc; background: #fff; }
+    
+    pre { background: #222; color: #0f0; padding: 10px; font-size: 10px; overflow-x: auto; border-radius: 3px; margin: 5px 0; max-height: 200px;}
+    
+    #metricsView { margin-top: 15px; font-family: monospace; font-size: 10px; background: #222; color: #0f0; padding: 10px; border-radius: 5px; }
+    #metricsView p { margin: 2px 0; }
+    
+    .overlay-container { position: relative; display: inline-block; width: 100%; }
+    .overlay-box { position: absolute; border: 2px solid red; pointer-events: none; }
+    .overlay-label { position: absolute; background: red; color: white; font-size: 8px; padding: 1px 3px; white-space: nowrap; top: -12px; left: -2px; }
+  </style>
+</head>
+<body>
+  <h2>Private Browser Agent</h2>
+  
+  <div id="setupView">
+    <textarea id="promptInput" rows="3" style="width: 100%" placeholder="Enter task (e.g. Select the laptop with the highest RAM.)"></textarea>
+    <button id="runBtn" style="width: 100%; padding: 8px; margin-top: 5px; background: #0066cc; color: #fff; border: none; border-radius: 3px; font-weight: bold; cursor: pointer;">RUN TASK</button>
+  </div>
+
+  <div id="executionView" class="hidden">
+    
+    <div class="status-group" id="grp-task">
+      <h3>TASK</h3>
+      <div id="taskText" style="font-weight: bold; color: #333; margin-bottom: 5px;"></div>
+      <div class="step" id="step-understand">Task understood</div>
+    </div>
+
+    <div class="status-group" id="grp-local">
+      <h3>LOCAL VISION</h3>
+      <div class="step" id="step-capture">Screenshot captured locally</div>
+      <div class="step" id="step-vision">Local vision processed</div>
+    </div>
+
+    <div class="status-group" id="grp-privacy">
+      <h3>PRIVACY</h3>
+      <div class="step" id="step-pii">PII detected locally</div>
+      <div class="step" id="step-redact">Sensitive regions redacted</div>
+      <div class="step" id="step-network-gate">Network payload validated</div>
+      <div class="step" id="step-original-blocked">Original screen not transmitted</div>
+    </div>
+
+    <div class="status-group" id="grp-server">
+      <h3>SERVER REASONING (GROQ)</h3>
+      <div class="step" id="step-sent">Sanitized context sent</div>
+      <div class="step" id="step-reasoning">Groq reasoning completed</div>
+      <div class="step" id="step-tool">Tool call generated</div>
+    </div>
+
+    <div class="status-group" id="grp-browser">
+      <h3>BROWSER EXECUTION</h3>
+      <div class="step" id="step-observe">Current page observed</div>
+      <div class="step" id="step-execute">Action executed</div>
+      <div class="step" id="step-verify">Action verified</div>
+    </div>
+
+    <div class="status-group" id="grp-result">
+      <h3>RESULT</h3>
+      <div id="finalResult" style="font-weight: bold; color: #0066cc;">RUNNING...</div>
+    </div>
+    
+    <button class="collapsible">LOCAL VISION PREVIEW</button>
+    <div class="content">
+        <p><strong>Model:</strong> Xenova/yolos-tiny</p>
+        <p><strong>Backend:</strong> WASM</p>
+        <p><strong>Model Load:</strong> <span id="v-load">...</span> ms</p>
+        <p><strong>Inference:</strong> <span id="v-inf">...</span> ms</p>
+        <p><strong>Detections:</strong> <span id="v-det">0</span></p>
+        <ul id="v-list" style="margin:5px 0; padding-left: 20px; font-size: 10px;"></ul>
+        <div class="overlay-container" id="v-overlay-container">
+            <img id="v-img" style="max-width: 100%; border: 1px solid #ccc;" />
+            <div id="v-boxes"></div>
+        </div>
+    </div>
+
+    <button class="collapsible">PRIVACY PREVIEW</button>
+    <div class="content">
+        <div class="img-compare">
+            <div>
+                <strong>ORIGINAL (LOCAL)</strong>
+                <img id="p-orig" />
+            </div>
+            <div>
+                <strong>SANITIZED (NETWORK)</strong>
+                <img id="p-san" />
+            </div>
+        </div>
+    </div>
+
+    <button class="collapsible">DEVELOPER JSON</button>
+    <div class="content">
+        <strong>STEP 2 RESULT (INTENT)</strong>
+        <pre id="j-step2"></pre>
+        <strong>SAFE CONTEXT</strong>
+        <pre id="j-safe"></pre>
+        <strong>SANITIZED SCREEN CONTEXT</strong>
+        <pre id="j-screen"></pre>
+        <strong>GROQ REQUEST SUMMARY</strong>
+        <pre id="j-groq"></pre>
+        <strong>TOOL CALL</strong>
+        <pre id="j-call"></pre>
+        <strong>TOOL RESULT</strong>
+        <pre id="j-res"></pre>
+    </div>
+
+    <div id="metricsView">
+      <h3 style="margin:0 0 5px 0; border-bottom: 1px solid #444; padding-bottom: 3px;">SIH EVALUATION METRICS</h3>
+      <p>Visual Context Acc : <span id="metric-vision-acc">NOT MEASURED</span></p>
+      <p>PII Precision      : <span id="metric-pii-prec">NOT MEASURED</span></p>
+      <p>PII Recall         : <span id="metric-pii-recall">NOT MEASURED</span></p>
+      <p>Redaction Precision: <span id="metric-redact-prec">NOT MEASURED</span></p>
+      <p>Redaction Recall   : <span id="metric-redact-recall">NOT MEASURED</span></p>
+      <p>Model Load         : <span id="metric-model-load">NOT MEASURED</span></p>
+      <p>Vision Inference   : <span id="metric-vision-inf">NOT MEASURED</span></p>
+      <p>Network & Server   : <span id="metric-server">NOT MEASURED</span></p>
+      <p>Browser Execution  : <span id="metric-browser">NOT MEASURED</span></p>
+      <p>Total Latency      : <span id="metric-total">NOT MEASURED</span></p>
+      <p>Memory             : <span id="metric-memory">NOT MEASURED</span></p>
+      <p>Backend            : <span id="metric-backend">WASM</span></p>
+    </div>
+
+  </div>
+
+  <script src="sidepanel.js" type="module"></script>
+</body>
+</html>
